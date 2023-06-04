@@ -19,10 +19,16 @@ defmodule PasswdExTest do
   end
 
   test "getpwuid returns a struct" do
-    assert match?(%PasswdEx.Passwd{uid: 0}, PasswdEx.getpwuid(0))
+    case :os.type() do
+      {:unix, _} -> assert match?(%PasswdEx.Passwd{uid: 0}, PasswdEx.getpwuid(0))
+      _ -> assert PasswdEx.getpwuid(0) == nil
+    end
   end
 
   test "getpwnam returns a struct" do
-    assert match?(%PasswdEx.Passwd{uid: 0}, PasswdEx.getpwnam("root"))
+    case :os.type() do
+      {:unix, _} -> assert match?(%PasswdEx.Passwd{uid: 0}, PasswdEx.getpwnam("root"))
+      _ -> assert PasswdEx.getpwnam("root") == nil
+    end
   end
 end

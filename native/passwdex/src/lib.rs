@@ -13,26 +13,55 @@ struct Passwd {
     shell: String,
 }
 
+#[cfg(unix)]
 #[rustler::nif]
 fn getuid() -> u32 {
     unsafe { libc::getuid() }
 }
 
+#[cfg(not(unix))]
+#[rustler::nif]
+fn getuid(env: Env<'_>) -> Term<'_> {
+   return nil().encode(env)
+}
+
+#[cfg(unix)]
 #[rustler::nif]
 fn getgid() -> u32 {
     unsafe { libc::getgid() }
 }
 
+#[cfg(not(unix))]
+#[rustler::nif]
+fn getgid(env: Env<'_>) -> Term<'_> {
+   return nil().encode(env)
+}
+
+#[cfg(unix)]
 #[rustler::nif]
 fn geteuid() -> u32 {
     unsafe { libc::geteuid() }
 }
 
+#[cfg(not(unix))]
+#[rustler::nif]
+fn geteuid(env: Env<'_>) -> Term<'_> {
+   return nil().encode(env)
+}
+
+#[cfg(unix)]
 #[rustler::nif]
 fn getegid() -> u32 {
     unsafe { libc::getegid() }
 }
 
+#[cfg(not(unix))]
+#[rustler::nif]
+fn getegid(env: Env<'_>) -> Term<'_> {
+   return nil().encode(env)
+}
+
+#[cfg(unix)]
 #[rustler::nif]
 fn getpwuid(env: Env<'_>, uid: u32) -> Term<'_> {
     unsafe {
@@ -42,6 +71,13 @@ fn getpwuid(env: Env<'_>, uid: u32) -> Term<'_> {
     }
 }
 
+#[cfg(not(unix))]
+#[rustler::nif]
+fn getpwuid(env: Env<'_>, _uid: u32) -> Term<'_> {
+   return nil().encode(env)
+}
+
+#[cfg(unix)]
 #[rustler::nif]
 fn getpwnam(env: Env<'_>, name: String) -> Term<'_> {
     unsafe {
@@ -53,6 +89,13 @@ fn getpwnam(env: Env<'_>, name: String) -> Term<'_> {
     }
 }
 
+#[cfg(not(unix))]
+#[rustler::nif]
+fn getpwnam(env: Env<'_>, _name: String) -> Term<'_> {
+   return nil().encode(env)
+}
+
+#[cfg(unix)]
 unsafe fn passwd_to_term(p: *mut libc::passwd, env: Env) -> Term<'_> {
     if !p.is_null() {
         Passwd {
@@ -70,6 +113,7 @@ unsafe fn passwd_to_term(p: *mut libc::passwd, env: Env) -> Term<'_> {
     }
 }
 
+#[cfg(unix)]
 unsafe fn c_char_to_string(ptr: *const libc::c_char) -> String {
     let cstr = CStr::from_ptr(ptr);
     let str_slice = cstr.to_str().unwrap();

@@ -5,7 +5,7 @@ defmodule PasswdEx do
 
   @doc """
   Hello world.
-
+  
   """
 
   use Rustler, otp_app: :passwd_ex, crate: "passwdex"

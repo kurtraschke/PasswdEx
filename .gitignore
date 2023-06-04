@@ -26,3 +26,4 @@ passwd_ex-*.tar
 /tmp/
 
 /priv/native/*.so
+/priv/native/*.dll
