@@ -3,32 +3,56 @@ defmodule PasswdExTest do
   doctest PasswdEx
 
   test "getuid returns a uid" do
-    assert PasswdEx.getuid() >= 0
+    value = PasswdEx.getuid()
+
+    case :os.type() do
+      {:unix, _} -> assert match?({:ok, uid} when uid >= 0, value)
+      _ -> assert match?({:error, :unsupported}, value)
+    end
   end
 
   test "getgid returns a gid" do
-    assert PasswdEx.getgid() >= 0
+    value = PasswdEx.getgid()
+
+    case :os.type() do
+      {:unix, _} -> assert match?({:ok, uid} when uid >= 0, value)
+      _ -> assert match?({:error, :unsupported}, value)
+    end
   end
 
   test "geteuid returns a uid" do
-    assert PasswdEx.geteuid() >= 0
+    value = PasswdEx.geteuid()
+
+    case :os.type() do
+      {:unix, _} -> assert match?({:ok, uid} when uid >= 0, value)
+      _ -> assert match?({:error, :unsupported}, value)
+    end
   end
 
   test "getegid returns a gid" do
-    assert PasswdEx.getegid() >= 0
+    value = PasswdEx.getegid()
+
+    case :os.type() do
+      {:unix, _} -> assert match?({:ok, uid} when uid >= 0, value)
+      _ -> assert match?({:error, :unsupported}, value)
+    end
   end
 
   test "getpwuid returns a struct" do
+    value = PasswdEx.getpwuid(0)
+
     case :os.type() do
-      {:unix, _} -> assert match?(%PasswdEx.Passwd{uid: 0}, PasswdEx.getpwuid(0))
-      _ -> assert PasswdEx.getpwuid(0) == nil
+      {:unix, _} -> assert match?({:ok, %PasswdEx.Passwd{uid: 0}}, value)
+      _ -> assert match?({:error, :unsupported}, value)
     end
   end
 
   test "getpwnam returns a struct" do
+    value = PasswdEx.getpwnam("root")
+
     case :os.type() do
-      {:unix, _} -> assert match?(%PasswdEx.Passwd{uid: 0}, PasswdEx.getpwnam("root"))
-      _ -> assert PasswdEx.getpwnam("root") == nil
+      {:unix, _} -> assert match?({:ok, %PasswdEx.Passwd{uid: 0}}, value)
+      _ -> assert match?({:error, :unsupported}, value)
     end
   end
 end

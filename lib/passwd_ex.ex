@@ -5,7 +5,7 @@ defmodule PasswdEx do
 
   @doc """
   Hello world.
-  
+
   """
 
   use Rustler, otp_app: :passwd_ex, crate: "passwdex"
@@ -23,21 +23,21 @@ defmodule PasswdEx do
     defstruct [:name, :passwd, :uid, :gid, :gecos, :dir, :shell]
   end
 
-  @spec getuid :: non_neg_integer()
+  @spec getuid :: {:ok, non_neg_integer()} | {:error, atom()}
   def getuid(), do: :erlang.nif_error(:nif_not_loaded)
 
-  @spec getgid :: non_neg_integer()
+  @spec getgid :: {:ok, non_neg_integer()} | {:error, atom()}
   def getgid(), do: :erlang.nif_error(:nif_not_loaded)
 
-  @spec geteuid :: non_neg_integer()
+  @spec geteuid :: {:ok, non_neg_integer()} | {:error, atom()}
   def geteuid(), do: :erlang.nif_error(:nif_not_loaded)
 
-  @spec getegid :: non_neg_integer()
+  @spec getegid :: {:ok, non_neg_integer()} | {:error, atom()}
   def getegid(), do: :erlang.nif_error(:nif_not_loaded)
 
-  @spec getpwuid(non_neg_integer()) :: Passwd.t() | nil
+  @spec getpwuid(non_neg_integer()) :: {:ok, Passwd.t()} | {:error, atom()}
   def getpwuid(_uid), do: :erlang.nif_error(:nif_not_loaded)
 
-  @spec getpwnam(String.t()) :: Passwd.t() | nil
+  @spec getpwnam(String.t()) :: {:ok, Passwd.t()} | {:error, atom()}
   def getpwnam(_name), do: :erlang.nif_error(:nif_not_loaded)
 end
